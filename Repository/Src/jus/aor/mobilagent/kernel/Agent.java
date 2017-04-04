@@ -1,23 +1,13 @@
 package jus.aor.mobilagent.kernel;
 
-public class Agent implements _Agent,_Service<T>,_Action {
+public class Agent implements _Agent {
 
+	private static final long serialVersionUID = 1;
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public T call(Object... params) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
