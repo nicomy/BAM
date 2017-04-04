@@ -29,7 +29,13 @@ public abstract class Agent implements _Agent {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+	
+		if (route.hasNext()) {
+			Etape etape = route.next();
+			etape.action.execute();
+
+			move();
+		}
 
 	}
 
