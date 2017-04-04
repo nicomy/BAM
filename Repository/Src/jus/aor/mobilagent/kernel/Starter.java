@@ -60,6 +60,8 @@ public class Starter{
 //			logger.setUseParentHandlers(false);
 			logger.addHandler(new IOHandler());
 			logger.setLevel(level);
+			logger.log(Level.INFO, "init...");
+			
 			/* Récupération d'informations de configuration */
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			doc = docBuilder.parse(new File(args[0]));
@@ -70,6 +72,8 @@ public class Starter{
 			addServices();
 			// déploiement d'agents
 			deployAgents();
+			
+			System.out.println("fin starter");
 		}catch(Exception ex){
 			logger.log(Level.FINE,"Ce programme nécessite un argument : <conf file> <name server>",ex);
 			return;
@@ -77,8 +81,15 @@ public class Starter{
 	}
 	@SuppressWarnings("unchecked")
 	protected void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		loader = new BAMServerClassLoader(new URL[]{new URL("file:///.../MobilagentServer.jar")},this.getClass().getClassLoader());
+		loader = new BAMServerClassLoader(new URL[]{new URL("file:////media/ombresocial/Documents commun/travail/application_rep/BAM/all-jar/MobilagentServer.jar")},this.getClass().getClassLoader());
+		
+		logger.log(Level.INFO, loader.toString());
+		
+		
 		classe = (Class<Server>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
+		
+		logger.log(Level.INFO, classe.toString());
+		
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}
 	/**
@@ -144,7 +155,9 @@ public class Starter{
 	 */
 	protected void deployAgent(String classeName, Object[] args, String codeBase, List<String> serverAddress, List<String> serverAction) {
 		try{
+			System.out.println("déployement agent ");
 			server.deployAgent(classeName,args,codeBase,serverAddress,serverAction);
+			logger.log(Level.INFO, "deployement d'agent");
 		}catch(Exception e){
 			logger.log(Level.FINE," erreur durant le déploiement de l'agent",e);
 		}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
-	<port value="1111"/>
+	<port value="6666"/>
 	<agent class="jus.aor.mobilagent.hello.Hello" codebase="all-jar/Hello.jar" args="">
 		<etape server="mobilagent://...:2222/" action="doIt" />
 		<etape server="mobilagent://...:3323/" action="doIt" />
