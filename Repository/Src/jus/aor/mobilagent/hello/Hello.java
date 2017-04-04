@@ -1,10 +1,6 @@
 package jus.aor.mobilagent.hello;
 
-import java.net.URI;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.logging.Level;
 
 import jus.aor.mobilagent.kernel._Action;
@@ -67,7 +63,7 @@ public class Hello extends Agent{
 			}
 			
 			
-		}
+		};
 	}
 	// ...
 }
