@@ -5,9 +5,11 @@ package jus.aor.mobilagent.kernel;
 
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 //import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URI;
 //import java.net.URI;
 //import java.net.URL;
 import java.util.List;
@@ -82,12 +84,25 @@ public final class Server  implements _Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-			
-			
+
+			URI uri = new URI(codeBase);
+			BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(uri.getPath(), this.getClass().getClassLoader());
+			Class<?> agentClass = Class.forName(classeName, true, agentLoader);
+			_Agent agent = (_Agent) agentClass.getConstructor(Object[].class).newInstance(new Object[]{args});
+			logger.log(Level.INFO, String.format("Initializing agent on %s...", name));
+			agent.init(agentServer, name);
+			for(int i = 0; i < etapeAddress.size(); i++) {
+				Field f = agentClass.getDeclaredField(etapeAction.get(i));
+				f.setAccessible(true);
+				_Action action = (_Action) f.get(agent);
+				agent.addEtape(new Etape(new URI(etapeAddress.get(i)), action));
+			}
+			startAgent(agent, agentLoader);
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			ex.printStackTrace();
 			return;
-		}
+}
 	}
 	/**
 	 * Primitive permettant de "mover" un agent sur ce serveur en vue de son exécution
