@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 /**
  * Définit la feuille de route que l'agent va suivre
  * @author  Morat
@@ -36,18 +38,35 @@ class Route implements Iterable<Etape>, Serializable{
 	 */
 	public void add(Etape e) { route.add(route.size(),e);}
 	/**
-	 * Restitue la prochaine étape ou la dernière qui est la base de départ.
-	 * @return la prochaine étape.
+	 * Restitue la prochaine �tape ou la derni�re qui est la base de d�part.
+	 * @return la prochaine �tape.
 	 */
 	Etape get() throws NoSuchElementException {
 		
+
+		if(hasNext()){
+			if(!this.route.isEmpty()){
+				return this.route.get(0);
+			}
+			return this.retour;
+		}
+		throw new NoSuchElementException("get() : C'est pas normal !");
+
 	}
 	/**
 	 * Restitue la prochaine étape et élimine de la route ou la dernière qui est la base de départ.
 	 * @return la prochaine étape.
 	 */
 	Etape next() throws NoSuchElementException {
-		//A COMPLETER
+		
+		if (this.hasNext){
+			if(!this.route.isEmpty()){
+				return this.route.remove(0);
+			}
+			this.hasNext = false;
+			return this.retour;
+		}
+		throw new NoSuchElementException("next(): C'est pas normal !");
 	}
 	/**
 	 * Il y a-t-il encore une étape à parcourir.
