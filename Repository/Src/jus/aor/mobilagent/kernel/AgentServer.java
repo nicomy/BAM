@@ -1,9 +1,14 @@
 package jus.aor.mobilagent.kernel;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 
 public class AgentServer  implements Runnable{
 	
@@ -11,7 +16,7 @@ public class AgentServer  implements Runnable{
 	private String name;
 
 	//port
-	private int port = 10140; // initie avec le port par defaut;
+	private int port;
 	
 	
 	public AgentServer(int port, String name) {
@@ -29,13 +34,13 @@ public class AgentServer  implements Runnable{
 	@Override
 	public void run() {
 		try {
-			ServerSocket ss = new ServerSocket(port, 1000);
+			ServerSocket servSocket = new ServerSocket(port);
 			
-			Socket client = null;
-			_Agent agent = null;
+			
 			while(true){
-				client = ss.accept();
-				agent = getAgent(client);
+				
+				Socket client = servSocket.accept(); // wait for a connection
+				_Agent agent = getAgent(client);
 				
 				agent.reInit(this, name);
 				
@@ -48,13 +53,46 @@ public class AgentServer  implements Runnable{
 	}
 
 	private _Agent getAgent(Socket client) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(this.getClass().getClassLoader());
+
+		InputStream in;
+		_Agent agent = null;
+		
+		try {
+			in = client.getInputStream();
+
+		ObjectInputStream inRepo = new ObjectInputStream(in);
+		AgentInputStream ais = new AgentInputStream(in, agentLoader);
+
+		Jar repo = (Jar) inRepo.readObject();
+		
+		agentLoader.integrateCode(repo);
+		
+
+		agent = (_Agent) ais.readObject();
+		ais.close();
+		
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		}
+		
+		return agent;
 	}
 
 	public URI site() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		URI uri = null;
+		try {
+			uri = new URI("mobileagent://localhost:" + port);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return uri;
 	}
 
 	public _Service<?> getService(String s) {
