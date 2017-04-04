@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
 
 public class AgentServer  implements Runnable{
 	
@@ -33,21 +34,26 @@ public class AgentServer  implements Runnable{
 
 	@Override
 	public void run() {
+		System.out.println("dans le run ");
 		try {
 			ServerSocket servSocket = new ServerSocket(port);
 			
 			
 			while(true){
-				
+				Starter.getLogger().log(Level.INFO, "run avant l'ouverture de socket");
 				Socket client = servSocket.accept(); // wait for a connection
+//				Starter.getLogger().log(Level.INFO, "run amilieu l'ouverture de socket");
 				_Agent agent = getAgent(client);
-				
+				Starter.getLogger().log(Level.INFO, "run après l'ouverture de socket");
 				agent.reInit(this, name);
 				
 				new Thread(agent).start();
+				
+				servSocket.close();
 			}
 		} catch (IOException e) {
-			System.out.println("ici");
+			Starter.getLogger().log(Level.INFO, "erreur de run  ");
+			System.out.println(e);
 			e.printStackTrace();
 		}
 	}

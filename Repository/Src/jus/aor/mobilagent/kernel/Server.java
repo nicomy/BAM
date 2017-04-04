@@ -5,11 +5,11 @@ package jus.aor.mobilagent.kernel;
 
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
+//import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URI;
-import java.net.URL;
+//import java.net.URI;
+//import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
