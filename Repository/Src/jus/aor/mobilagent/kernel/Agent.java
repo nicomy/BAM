@@ -13,6 +13,10 @@ import java.util.NoSuchElementException;
 
 public abstract class Agent implements _Agent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4332202893912153271L;
 	private Route route;
 	private AgentServer agentServer;
 	private String serverName;
@@ -52,7 +56,7 @@ public abstract class Agent implements _Agent {
 	@Override
 	public void reInit(AgentServer server, String serverName) {
 		
-		this.agentServer = agentServer;
+		this.agentServer = server;
 		this.serverName = serverName;
 		
 	}
@@ -76,7 +80,7 @@ public abstract class Agent implements _Agent {
 	}
 	
 	private void move(){
-		// on recup l'URI de la prochaine étape
+		// on recup l'URI de la prochaine ï¿½tape
 		move(route.get().server);
 	}
 	
