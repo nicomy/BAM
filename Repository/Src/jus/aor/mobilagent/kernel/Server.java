@@ -3,8 +3,11 @@
  */
 package jus.aor.mobilagent.kernel;
 
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -42,7 +45,9 @@ public final class Server  implements _Server {
 			loggerName = "jus/aor/mobilagent/"+InetAddress.getLocalHost().getHostName()+"/"+this.name;
 			logger=Logger.getLogger(loggerName);
 			/* démarrage du server d'agents mobiles attaché à cette machine */
-			//A COMPLETER
+			agentServer = new AgentServer(port, name);
+			logger.log(Level.INFO, String.format("Starting Agent Server [%s] on port [%d]", name, port));
+			(new Thread(agentServer)).start();
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
 		}catch(Exception ex){
@@ -89,7 +94,14 @@ public final class Server  implements _Server {
 	 * @throws Exception
 	 */
 	protected void startAgent(_Agent agent, BAMAgentClassLoader loader) throws Exception {
-		//A COMPLETER
+		try(Socket soc = new Socket(agentServer.site().getHost(), agentServer.site().getPort())) {
+			OutputStream out  = soc.getOutputStream();
+			ObjectOutputStream outRepo = new ObjectOutputStream(out);
+			ObjectOutputStream outAgent = new ObjectOutputStream(out);
+			Jar repo = loader.extractCode();
+			outAgent.writeObject(repo);
+			outRepo.writeObject(agent);
+}
 		
 	}
 }

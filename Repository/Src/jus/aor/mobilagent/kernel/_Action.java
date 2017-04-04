@@ -13,12 +13,14 @@ public interface _Action extends Serializable{
 	/** l'action vide */
 	public static final _Action NIHIL = new _Action() {
 		
+		private static final long serialVersionUID = 1236784131639552L; // Pas sur encore
+		
 		@Override
 		public void execute() {
-			// TODO Auto-generated method stub
+			System.out.println("Action NULL executée ");
 			
 		}
-	}		/*A COMPLETER*/; 
+	};
 	/**
 	 * ExÃ©cute l'action
 	 */
