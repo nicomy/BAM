@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
 
 public abstract class Agent implements _Agent {
 
@@ -29,7 +30,7 @@ public abstract class Agent implements _Agent {
 
 	@Override
 	public void run() {
-	
+		Starter.getLogger().log(Level.INFO, "run de L'agent");
 		if (route.hasNext()) {
 			Etape etape = route.next();
 			etape.action.execute();
@@ -90,8 +91,11 @@ public abstract class Agent implements _Agent {
 	protected void move(URI uri) { // TODO : Ca c'est du copier coller
 
 		try {
-
+			Starter.getLogger().log(Level.INFO, uri.toString());
 			socket = new Socket(uri.getHost(), uri.getPort());
+			
+			Starter.getLogger().log(Level.INFO, uri.getHost());
+			Starter.getLogger().log(Level.INFO, Integer.toString(uri.getPort()));
 			BAMAgentClassLoader agentLoader = (BAMAgentClassLoader) this
 					.getClass().getClassLoader();
 			Jar repo = agentLoader.extractCode();
