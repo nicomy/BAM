@@ -34,9 +34,8 @@ public class Hello extends Agent{
 		@Override
 		public void execute() {
 			// TODO Auto-generated method stub
-			
+			System.out.println("HELLO");
 		}
-		// ...
 	};
 	/* (non-Javadoc)
 	 * @see jus.aor.mobilagent.kernel.Agent#retour()
@@ -46,7 +45,5 @@ public class Hello extends Agent{
 		
 		
 		return doIt;
-		// return ...;
 	}
-	// ...
 }

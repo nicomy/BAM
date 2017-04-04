@@ -6,12 +6,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
 /**
- * ObjectInputStream spécifique au bus à agents mobiles. Il permet d'utiliser le loader de l'agent.
+ * ObjectInputStream spï¿½cifique au bus ï¿½ agents mobiles. Il permet d'utiliser le loader de l'agent.
  * @author   Morat
  */
 class AgentInputStream extends ObjectInputStream{
     /**
-     * le classLoader à utiliser
+     * le classLoader a utiliser
      */
     BAMAgentClassLoader loader;
     AgentInputStream(InputStream is, BAMAgentClassLoader cl) throws IOException{super(is); loader = cl;}

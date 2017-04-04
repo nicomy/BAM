@@ -2,7 +2,7 @@ package jus.aor.mobilagent.kernel;
 
 public class Agent implements _Agent {
 
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 	
 	@Override
 	public void run() {

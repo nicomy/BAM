@@ -43,6 +43,10 @@ public final class Server  implements _Server{
 			logger=Logger.getLogger(loggerName);
 			/* démarrage du server d'agents mobiles attaché à cette machine */
 			//A COMPLETER
+			this.agentServer = new AgentServer(port, name);
+			this.port = port ;
+			this.name = name ; 
+			
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
 		}catch(Exception ex){
@@ -73,10 +77,17 @@ public final class Server  implements _Server{
 	 * @param etapeAddress la liste des adresse des étapes
 	 * @param etapeAction la liste des actions des étapes
 	 */
-	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
+	public final void deployAgent(String classeName, Object[] args, String codeBase, 
+			List<String> etapeAddress, List<String> etapeAction) {
 		try {
-			//A COMPLETER en terme de startAgent
+			
+			
+			BAMAgentClassLoader wClassLoader = new BAMAgentClassLoader(new URI(codeBase).getPath(),
+					this.getClass().getClassLoader());
+			
+			
 		}catch(Exception ex){
+			System.out.println(ex);
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
 		}

@@ -60,6 +60,7 @@ public class Starter{
 //			logger.setUseParentHandlers(false);
 			logger.addHandler(new IOHandler());
 			logger.setLevel(level);
+			logger.log(Level.FINE,"hey wassup fucker ");
 			/* Récupération d'informations de configuration */
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			doc = docBuilder.parse(new File(args[0]));
@@ -71,13 +72,14 @@ public class Starter{
 			// déploiement d'agents
 			deployAgents();
 		}catch(Exception ex){
+			System.out.println(ex);
 			logger.log(Level.FINE,"Ce programme nécessite un argument : <conf file> <name server>",ex);
 			return;
 		}
 	}
 	@SuppressWarnings("unchecked")
 	protected void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		loader = new BAMServerClassLoader(new URL[]{new URL("file:///.../MobilagentServer.jar")},this.getClass().getClassLoader());
+		loader = new BAMServerClassLoader(new URL[]{new URL("file://all-jar/MobilagentServer.jar")},this.getClass().getClassLoader());
 		classe = (Class<Server>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}

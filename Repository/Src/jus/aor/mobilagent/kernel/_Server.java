@@ -26,6 +26,8 @@ public interface _Server{
 	 * @param etapeAction la liste ds actions des étapes
 	 */
 	public abstract void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction);
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
