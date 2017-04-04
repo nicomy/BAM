@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: jus.aor.mobilagent.kernel.Starter
+Class-Path: jus.util.jar
+

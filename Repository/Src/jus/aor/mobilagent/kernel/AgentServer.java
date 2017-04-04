@@ -1,28 +1,103 @@
 package jus.aor.mobilagent.kernel;
 
-public class AgentServer extends Agent implements _Agent{
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+
+public class AgentServer  implements Runnable{
+	
+	//name 
+	private String name;
+
+	//port
+	private int port;
+	
+	
+	public AgentServer(int port, String name) {
+		this.name = name; 
+		this.port = port ; 
+	}
+
+	/** List of services in the AgentService */
+	
+	
+	
+	
+//	private Map<String, _Service<?>> pServices;
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		try {
+			ServerSocket servSocket = new ServerSocket(port);
+			
+			
+			while(true){
+				
+				Socket client = servSocket.accept(); // wait for a connection
+				_Agent agent = getAgent(client);
+				
+				agent.reInit(this, name);
+				
+				new Thread(agent).start();
+			}
+		} catch (IOException e) {
+			System.out.println("ici");
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public void init(AgentServer agentServer, String serverName) {
-		// TODO Auto-generated method stub
+	private _Agent getAgent(Socket client) {
 		
+		BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(this.getClass().getClassLoader());
+
+		InputStream in;
+		_Agent agent = null;
+		
+		try {
+			in = client.getInputStream();
+
+		ObjectInputStream inRepo = new ObjectInputStream(in);
+		AgentInputStream ais = new AgentInputStream(in, agentLoader);
+
+		Jar repo = (Jar) inRepo.readObject();
+		
+		agentLoader.integrateCode(repo);
+		
+
+		agent = (_Agent) ais.readObject();
+		ais.close();
+		
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		}
+		
+		return agent;
 	}
 
-	@Override
-	public void reInit(AgentServer server, String serverName) {
-		// TODO Auto-generated method stub
+	public URI site() {
 		
+		URI uri = null;
+		try {
+			uri = new URI("mobileagent://localhost:" + port);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return uri;
 	}
 
-	@Override
-	public void addEtape(Etape etape) {
+	public _Service<?> getService(String s) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
 }
