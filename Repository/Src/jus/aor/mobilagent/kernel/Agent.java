@@ -28,6 +28,11 @@ public class Agent implements _Agent {
 		
 	}
 
+	protected _Action retour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

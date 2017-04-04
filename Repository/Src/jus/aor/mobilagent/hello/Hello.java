@@ -14,7 +14,9 @@ import jus.aor.mobilagent.kernel.Agent;
  * @author  Morat
  */
 public class Hello extends Agent{
-
+		
+	
+	private static final long serialVersionUID = 2L ;
 	 /**
 	  * construction d'un agent de type hello.
 	  * @param args aucun argument n'est requis
@@ -26,6 +28,14 @@ public class Hello extends Agent{
 	 * l'action à entreprendre sur les serveurs visités  
 	 */
 	protected _Action doIt = new _Action(){
+		
+		private static final long serialVersionUID = 3L ;
+		
+		@Override
+		public void execute() {
+			// TODO Auto-generated method stub
+			
+		}
 		// ...
 	};
 	/* (non-Javadoc)
@@ -33,6 +43,9 @@ public class Hello extends Agent{
 	 */
 	@Override
 	protected _Action retour(){
+		
+		
+		return doIt;
 		// return ...;
 	}
 	// ...
