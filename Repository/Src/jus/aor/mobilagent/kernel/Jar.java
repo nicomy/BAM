@@ -64,7 +64,7 @@ public class Jar implements Iterable<Map.Entry<String,byte[]>>, Serializable{
 			contents.put(entry.getName(), buffer);
 		}
 		
-		jis.close();
+//		jis.close();
 	}
 	/**
    * Restitue le contenu d'un composant du jar.

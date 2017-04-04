@@ -18,11 +18,11 @@ public abstract class Agent implements _Agent {
 	 */
 	private static final long serialVersionUID = 4332202893912153271L;
 	private Route route;
-	private AgentServer agentServer;
-	private String serverName;
-	private Etape etapeVide; // TODO : regarder que ca fou pas la merde, sinon
+	private transient AgentServer agentServer;
+	private transient String serverName;
+	private  Etape etapeVide; // TODO : regarder que ca fou pas la merde, sinon
 								// remettre comme GitHub
-	private Socket socket;
+	private transient Socket socket;
 
 	public Agent() { // TODO : peut etre mettre Object ... args
 
@@ -45,7 +45,7 @@ public abstract class Agent implements _Agent {
 
 		this.agentServer = agentServer;
 		this.serverName = serverName;
-
+		Starter.getLogger().log(Level.INFO, "agentServer = " + agentServer.toString() +" serverName = "+serverName);
 		// TODO : au cas ou ca marche pas faire le truc d'Antoine qui est pas
 		// content
 		etapeVide = new Etape(this.agentServer.site(), _Action.NIHIL);
@@ -85,17 +85,21 @@ public abstract class Agent implements _Agent {
 
 	private void move() {
 		// on recup l'URI de la prochaine �tape
+		Starter.getLogger().log(Level.INFO, "move" + route.get().toString());
 		move(route.get().server);
 	}
 
 	protected void move(URI uri) { // TODO : Ca c'est du copier coller
 
 		try {
-			Starter.getLogger().log(Level.INFO, uri.toString());
+			
+//			Starter.getLogger().log(Level.INFO, "i"+uri.toString());
+//			Starter.getLogger().log(Level.INFO, "e" + uri.getHost());
+//			Starter.getLogger().log(Level.INFO, "a"+Integer.toString(uri.getPort()));
+			
+			
 			socket = new Socket(uri.getHost(), uri.getPort());
 			
-			Starter.getLogger().log(Level.INFO, uri.getHost());
-			Starter.getLogger().log(Level.INFO, Integer.toString(uri.getPort()));
 			BAMAgentClassLoader agentLoader = (BAMAgentClassLoader) this
 					.getClass().getClassLoader();
 			Jar repo = agentLoader.extractCode();

@@ -49,7 +49,7 @@ public class AgentServer  implements Runnable{
 				
 				new Thread(agent).start();
 				
-				servSocket.close();
+//				servSocket.close();
 			}
 		} catch (IOException e) {
 			Starter.getLogger().log(Level.INFO, "erreur de run  ");
