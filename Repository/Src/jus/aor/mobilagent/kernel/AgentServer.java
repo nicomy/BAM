@@ -19,6 +19,7 @@ public class AgentServer  implements Runnable{
 	//port
 	private int port;
 	
+	private String surname ; 
 	
 	public AgentServer(int port, String name) {
 		this.name = name; 
@@ -27,33 +28,28 @@ public class AgentServer  implements Runnable{
 
 	/** List of services in the AgentService */
 	
-	
+	public String toString(){
+		return name ; 
+	}
 	
 	
 //	private Map<String, _Service<?>> pServices;
 
 	@Override
 	public void run() {
-		System.out.println("dans le run ");
 		try {
 			ServerSocket servSocket = new ServerSocket(port);
 			
 			
 			while(true){
-				Starter.getLogger().log(Level.INFO, "run avant l'ouverture de socket");
 				Socket client = servSocket.accept(); // wait for a connection
-//				Starter.getLogger().log(Level.INFO, "run amilieu l'ouverture de socket");
 				_Agent agent = getAgent(client);
-				Starter.getLogger().log(Level.INFO, "run après l'ouverture de socket");
 				agent.reInit(this, name);
 				
 				new Thread(agent).start();
 				
-//				servSocket.close();
 			}
 		} catch (IOException e) {
-			Starter.getLogger().log(Level.INFO, "erreur de run  ");
-			System.out.println(e);
 			e.printStackTrace();
 		}
 	}
@@ -104,6 +100,11 @@ public class AgentServer  implements Runnable{
 	public _Service<?> getService(String s) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setsurname(String surname2) {
+		this.surname = surname2;
+		
 	}
 
 }

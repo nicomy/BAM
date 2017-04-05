@@ -36,13 +36,14 @@ public final class Server  implements _Server {
 	protected String loggerName;
 	/** le logger de ce serveur */
 	protected Logger logger=null;
+	
+	protected String surname ; 
 	/**
 	 * Démarre un serveur de type mobilagent 
 	 * @param port le port d'écuote du serveur d'agent 
 	 * @param name le nom du serveur
 	 */
 	public Server(final int port, final String name){
-		this.name=name;
 		try {
 			this.port=port;
 			/* mise en place du logger pour tracer l'application */
@@ -59,6 +60,12 @@ public final class Server  implements _Server {
 			return;
 		}
 	}
+	
+	public void setsurname(final String  surname){
+		this.surname = surname;
+		agentServer.setsurname(surname);
+	}
+	
 	/**
 	 * Ajoute le service caractérisé par les arguments
 	 * @param name nom du service
@@ -119,6 +126,12 @@ public final class Server  implements _Server {
 			outAgent.writeObject(repo);
 			outRepo.writeObject(agent);
 }
+		
+	}
+
+	@Override
+	public void setsurname() {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -18,7 +18,7 @@ public abstract class Agent implements _Agent {
 	 */
 	private static final long serialVersionUID = 4332202893912153271L;
 	private Route route;
-	private transient AgentServer agentServer;
+	protected transient AgentServer agentServer;
 	private transient String serverName;
 	private  Etape etapeVide; // TODO : regarder que ca fou pas la merde, sinon
 								// remettre comme GitHub
@@ -30,7 +30,6 @@ public abstract class Agent implements _Agent {
 
 	@Override
 	public void run() {
-		Starter.getLogger().log(Level.INFO, "run de L'agent");
 		if (route.hasNext()) {
 			Etape etape = route.next();
 			etape.action.execute();
@@ -45,7 +44,6 @@ public abstract class Agent implements _Agent {
 
 		this.agentServer = agentServer;
 		this.serverName = serverName;
-		Starter.getLogger().log(Level.INFO, "agentServer = " + agentServer.toString() +" serverName = "+serverName);
 		// TODO : au cas ou ca marche pas faire le truc d'Antoine qui est pas
 		// content
 		etapeVide = new Etape(this.agentServer.site(), _Action.NIHIL);
@@ -85,18 +83,12 @@ public abstract class Agent implements _Agent {
 
 	private void move() {
 		// on recup l'URI de la prochaine �tape
-		Starter.getLogger().log(Level.INFO, "move" + route.get().toString());
 		move(route.get().server);
 	}
 
 	protected void move(URI uri) { // TODO : Ca c'est du copier coller
 
 		try {
-			
-//			Starter.getLogger().log(Level.INFO, "i"+uri.toString());
-//			Starter.getLogger().log(Level.INFO, "e" + uri.getHost());
-//			Starter.getLogger().log(Level.INFO, "a"+Integer.toString(uri.getPort()));
-			
 			
 			socket = new Socket(uri.getHost(), uri.getPort());
 			

@@ -13,7 +13,7 @@ import jus.aor.mobilagent.kernel.Starter;
  */
 public class Hello extends Agent{
 
-	
+	private String etape;
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class Hello extends Agent{
 	  * @param args aucun argument n'est requis
 	  */
 	 public Hello(Object... args) {
-		 // ....
+		 etape = "";
 	 }
 	 /**
 	 * l'action à entreprendre sur les serveurs visités  
@@ -38,10 +38,11 @@ public class Hello extends Agent{
 
 		@Override
 		public void execute() {
-			System.out.println("hello");
-			Starter.getLogger().log(Level.INFO, "What's up fuckers ??? ");
+			Starter.getLogger().log(Level.INFO, "Hello Wolrd on est sur le serveur : \n" + agentServer.toString());
+			etape = etape.concat(String.format("%s\n", agentServer.toString()));
 			
 		}
+		
 
 	};
 	/* (non-Javadoc)
@@ -58,8 +59,7 @@ public class Hello extends Agent{
 
 			@Override
 			public void execute() {
-				System.out.println("retour");
-				Starter.getLogger().log(Level.INFO, "gud bie fuckers !! ");
+				Starter.getLogger().log(Level.INFO, "Les serveurs visitées sont : \n " +etape);
 			}
 			
 			

@@ -39,6 +39,9 @@ public class Starter{
 	protected BAMServerClassLoader loader;
 	/** la classe du server : jus.aor.mobilagent.kernel.Server */
 	protected Class<jus.aor.mobilagent.kernel.Server> classe;
+	
+	
+	private String name ; 
 	/**
 	 * 
 	 * @param args
@@ -60,8 +63,7 @@ public class Starter{
 //			logger.setUseParentHandlers(false);
 			logger.addHandler(new IOHandler());
 			logger.setLevel(level);
-			logger.log(Level.INFO, "init...");
-			
+			this.name = args[1];
 			/* Récupération d'informations de configuration */
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			doc = docBuilder.parse(new File(args[0]));
@@ -83,14 +85,12 @@ public class Starter{
 	protected void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		loader = new BAMServerClassLoader(new URL[]{new URL("file:////media/ombresocial/Documents commun/travail/application_rep/BAM/all-jar/MobilagentServer.jar")},this.getClass().getClassLoader());
 		
-		logger.log(Level.INFO, loader.toString());
-		
-		
 		classe = (Class<Server>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		
-		logger.log(Level.INFO, classe.toString());
 		
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
+		
+		server.setsurname();
 	}
 	/**
 	 * Ajoute les services définis dans le fichier de configuration
@@ -157,7 +157,6 @@ public class Starter{
 		try{
 			System.out.println("déployement agent ");
 			server.deployAgent(classeName,args,codeBase,serverAddress,serverAction);
-			logger.log(Level.INFO, "deployement d'agent");
 		}catch(Exception e){
 			logger.log(Level.FINE," erreur durant le déploiement de l'agent",e);
 		}

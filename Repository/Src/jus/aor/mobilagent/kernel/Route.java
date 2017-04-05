@@ -38,20 +38,20 @@ class Route implements Iterable<Etape>, Serializable{
 	 */
 	public void add(Etape e) { route.add(route.size(),e);}
 	/**
-	 * Restitue la prochaine étape ou la dernière qui est la base de départ.
-	 * @return la prochaine étape.
+	 * Restitue la prochaine ï¿½tape ou la derniï¿½re qui est la base de dï¿½part.
+	 * @return la prochaine ï¿½tape.
 	 */
 	Etape get() throws NoSuchElementException {
 		
-
+		
 		if(hasNext()){
 			if(!this.route.isEmpty()){
 				return this.route.get(0);
 			}
 			return this.retour;
+		}else{
+			throw new NoSuchElementException("get() : C'est pas normal !");
 		}
-		throw new NoSuchElementException("get() : C'est pas normal !");
-
 	}
 	/**
 	 * Restitue la prochaine Ã©tape et Ã©limine de la route ou la derniÃ¨re qui est la base de dÃ©part.
