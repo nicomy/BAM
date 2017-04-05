@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
 
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
@@ -50,7 +51,8 @@ class Route implements Iterable<Etape>, Serializable{
 			}
 			return this.retour;
 		}else{
-			throw new NoSuchElementException("get() : C'est pas normal !");
+			Starter.getLogger().log(Level.INFO, "plus d'étapes");
+			throw new NoSuchElementException();
 		}
 	}
 	/**

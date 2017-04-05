@@ -75,7 +75,6 @@ public class Starter{
 			// déploiement d'agents
 			deployAgents();
 			
-			System.out.println("fin starter");
 		}catch(Exception ex){
 			logger.log(Level.FINE,"Ce programme nécessite un argument : <conf file> <name server>",ex);
 			return;
@@ -155,7 +154,6 @@ public class Starter{
 	 */
 	protected void deployAgent(String classeName, Object[] args, String codeBase, List<String> serverAddress, List<String> serverAction) {
 		try{
-			System.out.println("déployement agent ");
 			server.deployAgent(classeName,args,codeBase,serverAddress,serverAction);
 		}catch(Exception e){
 			logger.log(Level.FINE," erreur durant le déploiement de l'agent",e);
