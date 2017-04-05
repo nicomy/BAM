@@ -20,8 +20,7 @@ public abstract class Agent implements _Agent {
 	private Route route;
 	protected transient AgentServer agentServer;
 	private transient String serverName;
-	private  Etape etapeVide; // TODO : regarder que ca fou pas la merde, sinon
-								// remettre comme GitHub
+	private  Etape etapeVide;
 	private transient Socket socket;
 
 	public Agent() { // TODO : peut etre mettre Object ... args
@@ -30,10 +29,12 @@ public abstract class Agent implements _Agent {
 
 	@Override
 	public void run() {
-		if (route.hasNext()) {
-			Etape etape = route.next();
+		
+		if (this.route.hasNext()) {
+			
+			Etape etape = this.route.next();
 			etape.action.execute();
-
+			
 			move();
 		}
 
@@ -44,8 +45,8 @@ public abstract class Agent implements _Agent {
 
 		this.agentServer = agentServer;
 		this.serverName = serverName;
-		// TODO : au cas ou ca marche pas faire le truc d'Antoine qui est pas
-		// content
+
+		
 		etapeVide = new Etape(this.agentServer.site(), _Action.NIHIL);
 
 		this.route = new Route(new Etape(agentServer.site(), this.retour()));
@@ -69,8 +70,7 @@ public abstract class Agent implements _Agent {
 	}
 
 	public String toString() {
-		return "Agent on server [" + serverName + "] with route: "
-				+ route.toString(); // TODO : attention ca vient du github
+		return "Agent actually on: " + serverName + " with route: " + route.toString(); 
 
 	}
 
@@ -82,23 +82,27 @@ public abstract class Agent implements _Agent {
 	}
 
 	private void move() {
-		// on recup l'URI de la prochaine ï¿½tape
+		// on recup l'URI de la prochaine étape
 		move(route.get().server);
 	}
 
-	protected void move(URI uri) { // TODO : Ca c'est du copier coller
+	protected void move(URI destination) {
 
 		try {
+			// création de la socket
+			socket = new Socket(destination.getHost(), destination.getPort());
 			
-			socket = new Socket(uri.getHost(), uri.getPort());
+			// récupération du classLoaderAgent
+			BAMAgentClassLoader agentLoader = (BAMAgentClassLoader) this.getClass().getClassLoader();
+			Jar jar = agentLoader.extractCode();
 			
-			BAMAgentClassLoader agentLoader = (BAMAgentClassLoader) this
-					.getClass().getClassLoader();
-			Jar repo = agentLoader.extractCode();
+			// flux sortant 
 			OutputStream out = socket.getOutputStream();
-			ObjectOutputStream outRepo = new ObjectOutputStream(out);
+			ObjectOutputStream outJar = new ObjectOutputStream(out);
 			ObjectOutputStream outAgent = new ObjectOutputStream(out);
-			outRepo.writeObject(repo);
+			
+			// envoie du jar + agent
+			outJar.writeObject(jar);
 			outAgent.writeObject(this);
 
 		} catch (UnknownHostException e) {
