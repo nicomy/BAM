@@ -30,6 +30,7 @@ public abstract class Agent implements _Agent {
 	@Override
 	public void run() {
 		
+
 		if (this.route.hasNext()) {
 			
 			Etape etape = this.route.next();
