@@ -23,7 +23,7 @@ public abstract class Agent implements _Agent {
 	private  Etape etapeVide;
 	private transient Socket socket;
 
-	public Agent() { // TODO : peut etre mettre Object ... args
+	public Agent() { 
 
 	}
 
@@ -83,17 +83,17 @@ public abstract class Agent implements _Agent {
 	}
 
 	private void move() {
-		// on recup l'URI de la prochaine étape
+		// on recup l'URI de la prochaine ï¿½tape
 		move(route.get().server);
 	}
 
 	protected void move(URI destination) {
 
 		try {
-			// création de la socket
+			// crï¿½ation de la socket
 			socket = new Socket(destination.getHost(), destination.getPort());
 			
-			// récupération du classLoaderAgent
+			// rï¿½cupï¿½ration du classLoaderAgent
 			BAMAgentClassLoader agentLoader = (BAMAgentClassLoader) this.getClass().getClassLoader();
 			Jar jar = agentLoader.extractCode();
 			

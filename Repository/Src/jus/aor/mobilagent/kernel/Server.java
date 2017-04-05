@@ -91,18 +91,24 @@ public final class Server  implements _Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-
+			//recupère l'uri 
 			URI uri = new URI(codeBase);
+			
+			 //crée la clase de l'agent et l'initie
 			BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(uri.getPath(), this.getClass().getClassLoader());
 			Class<?> agentClass = Class.forName(classeName, true, agentLoader);
 			_Agent agent = (_Agent) agentClass.getConstructor(Object[].class).newInstance(new Object[]{args});
 			agent.init(agentServer, name);
+			
+			//recrée la feuille des étapes et leurs action
 			for(int i = 0; i < etapeAddress.size(); i++) {
 				Field f = agentClass.getDeclaredField(etapeAction.get(i));
 				f.setAccessible(true);
 				_Action action = (_Action) f.get(agent);
 				agent.addEtape(new Etape(new URI(etapeAddress.get(i)), action));
 			}
+			
+			//start de l'agent
 			startAgent(agent, agentLoader);
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
@@ -119,13 +125,28 @@ public final class Server  implements _Server {
 	 */
 	protected void startAgent(_Agent agent, BAMAgentClassLoader loader) throws Exception {
 		try(Socket soc = new Socket(agentServer.site().getHost(), agentServer.site().getPort())) {
+			
+			//l'agent prépare à s'envoyer avec son jar sur la soc
 			OutputStream out  = soc.getOutputStream();
-			ObjectOutputStream outRepo = new ObjectOutputStream(out);
+			
+			//crée un output stream objet pour l'agent et pour le jar
+			 
+			ObjectOutputStream outJar = new ObjectOutputStream(out);
 			ObjectOutputStream outAgent = new ObjectOutputStream(out);
-			Jar repo = loader.extractCode();
-			outAgent.writeObject(repo);
-			outRepo.writeObject(agent);
-}
+			
+			//recrée le jar à envoyer
+			Jar jar = loader.extractCode();
+			
+			//écrit le jar et l'agent sur le ouputstream = les envoyer 
+			outAgent.writeObject(jar);
+			outJar.writeObject(agent);
+		} catch(Exception e){
+			 
+		      logger.log(Level.FINE," erreur durant le lancement du serveur"+this,e);
+		 
+		      e.printStackTrace();
+		 
+	    }
 		
 	}
 
