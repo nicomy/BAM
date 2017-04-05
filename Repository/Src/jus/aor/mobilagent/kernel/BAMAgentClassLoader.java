@@ -7,11 +7,10 @@
 //import java.util.Iterator;
 //import java.util.Map;
 //import java.util.Map.Entry;
-//import java.util.Set;
 //import java.util.jar.JarEntry;
 //import java.util.jar.JarException;
 //import java.util.jar.JarOutputStream;
-//import java.util.zip.ZipEntry;
+//
 //
 //public class BAMAgentClassLoader extends ClassLoader{
 //
@@ -34,7 +33,7 @@
 //		while(it.hasNext()){
 //			entry = it.next();
 //			/* ajoute la classe a la map du classloader */
-//			classes.put(entry.getKey(), entry.getValue());
+//			classes.put(className(entry.getKey()), entry.getValue());
 //			/* resoud la classe afin de pouvoir l'utiliser */
 //			Class<?> c = defineClass(entry.getKey(), entry.getValue(), 0, entry.getValue().length);
 //			resolveClass(c);
@@ -61,7 +60,7 @@
 //	}
 //
 //}
-
+//
 package jus.aor.mobilagent.kernel;
 
 import java.io.File;
