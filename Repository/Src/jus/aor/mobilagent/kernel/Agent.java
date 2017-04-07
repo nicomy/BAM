@@ -1,15 +1,12 @@
 package jus.aor.mobilagent.kernel;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URI;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
 
 public abstract class Agent implements _Agent {
 
